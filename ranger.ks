@@ -1,7 +1,7 @@
 //RANGER
 //Range Assessment, Navigation, Guidance, and Error Reduction
 //Created by lonespace, 2026
-//TODO: License
+//Licensed uner GPLv3
 
 //RANGER provides entry guidance for spaceplanes via constant AoA and dynamic bank angles
 //It calculates and manages crossrange and downrange errors via bank angle modulation and
