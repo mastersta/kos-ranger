@@ -169,7 +169,27 @@ function getRollDirection {
 
 //TODO: add data display functions
 
-//TODO: add vector drawing functions
+
+//=====Create Vecdraws=====
+local steerVecDraw to vecDraw(
+    v(0,0,0),
+    steeringDir:forevector,
+    rgb(1,0,0),
+    "SteeringVec",
+    20.0,
+    false,
+    0.01
+).
+
+local steerTopVecDraw to vecDraw(
+    v(0,0,0),
+    steeringDir:topvector,
+    rgb(0,1,0),
+    "",
+    10.0,
+    false,
+    0.01
+).
 
 
 function clamp { parameter minval, val, maxval. return max(minval, min(maxval, val)). }.
@@ -182,15 +202,6 @@ function getRangerGuidance {
         updateRangerLex().
 
         local shipProgradeVec to ship:velocity:surface.
-
-        //set rangerLex:targetRoll to
-        //    min(
-        //        rangerInit:maximumBank,
-        //        max(
-        //            rangerInit:minimumBank,
-        //            getDownrangeError() * rangerInit:bankGain.
-        //        )
-        //    ) * rangerLex:rollDirection.
 
         local targetRoll to getDownrangeError() * rangerInit:bankGain.
 
@@ -206,6 +217,14 @@ function getRangerGuidance {
 
         local pitchDirection to angleaxis(-rangerInit:angleOfAttack, rollDirection:starvector) * 
             rollDirection.
+
+        if rangerInit:displayVecDraws {
+            set steerVecDraw:vec to pitchDirection:forevector.
+            set steerTopVecDraw:vec to pitchDirection:topvector.
+        }.
+
+        set steerVecDraw:visible to rangerLex:displayVecDraws.
+        set steerTopVecDraw:visible to rangerLex:displayVecDraws.
 
         //If in the atmosphere, use the calcuated roll vector
         if ship:altitude < ship:body:atm:height {

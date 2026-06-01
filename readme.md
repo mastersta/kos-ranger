@@ -32,7 +32,7 @@ copypath("0:/ranger.ks", "1:/").
 |maximumBank|The maximum bank angle to use. Recommended to keep this at least 60 degrees; if set too low, the script may not be able to correct for large downrange errors if the downrange error is positive|degrees|no|90|
 |bankGain|The proportional gain for calculating the bank angle based on the downrange error. Higher values will result in more aggressive bank angle adjustments, while lower values will result in smoother but slower corrections. Adjust this value based on the performance of your spaceplane and the desired responsiveness|degrees per meter|no|0.004|
 |displayData *not yet implemented* |Whether to display real-time guidance data on the terminal while RANGER is active. Set to false to use your own custom data display|boolean|no|true|
-|displayVecDraws *not yet implemented* |Whether to display vecdraws that show where the script is directing the spaceplane to point|boolean|no|false|
+|displayVecDraws|Whether to display vecdraws that show where the script is directing the spaceplane to point|boolean|no|false|
 
 ```
 global rangerInit to lexicon(
