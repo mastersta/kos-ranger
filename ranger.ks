@@ -1,45 +1,10 @@
 //RANGER
-//Range Assessment, Navigation, Guidance, and Error Reduction
+//Reentry Assessment, Navigation, Guidance, and Error Reduction
 //Created by lonespace, 2026
 //Licensed uner GPLv3
 
-//RANGER provides entry guidance for spaceplanes via constant AoA and dynamic bank angles
-//It calculates and manages crossrange and downrange errors via bank angle modulation and
-//roll reversal maneuvers. RANGER simply provides a DIRECTION via which your script
-//should use to steer your spaceplane. It does not provide late atmospheric guidance;
-//once your spaceplane is into the normal aerodynamic flight regime, you should switch to
-//a more traditional aircraft guidance system that can handle the complexities of 
-//atmospheric flight. Manual flight control can be regained at any time via the ABORT
-//action, either via the backspace key or via command in your script calling RANGER.
-
-//Dependencies:
-//Kerbal Operating System (KOS) 1.6.0 or later, (may work with earlier versions, but not tested)
-//Trajectories 2.4.0 or later
-
-
-//RANGER requires some initial parameters to be set. These are provided to the RANGER
-//script via a LEXICON, as detailed in the RANGER documentation.
 
 @lazyglobal off.
-
-
-//global rangerInit to lexicon(
-//    PARAMETER                   UNIT                      REQD        DEFAULT VAL
-//    "angleOfAttack",            [degrees]                 yes
-//    "target",                   [geocoordinates]          no          latlng(0.1025, 74.5752)
-//    "rollReversalMode",         [string]                  no          "range"
-//    "timeBetweenReversals",     [seconds]                 if rollReversalMode = "time" or "both"          60
-//    "crossrangeTolerance",      [meters]                  if rollReversalMode = "range" or "both"         10000
-//    "smoothReversal",           [boolean]                 no          true
-//    "minimumBank",              [degrees]                 no          10
-//    "maximumBank",              [degrees]                 no          90
-//    "bankGain",                 [unitless]                no          1/250
-//    "displayData",              [boolean]                 no          true
-//    "displayVecDraws",          [boolean]                 no          false
-//).
-
-//rollReversalMode options: "range" "time" "both"
-
 
 
 //=====VALIDATION=====
