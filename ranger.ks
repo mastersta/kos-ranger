@@ -68,6 +68,10 @@ function updateRangerLex {
     set rangerLex:lonDiff to rangerLex:impactLonRads - rangerLex:targetLonRads.
 
     set rangerLex:rollDirection to getRollDirection().
+    set rangerLex:totalError to getErrorDistance().
+    set rangerLex:downrangeError to getDownrangeError().
+    set rangerLex:crossrangeError to getCrossrangeError().
+
 }.
 
 
@@ -167,8 +171,46 @@ function getRollDirection {
 }.
 
 
-//TODO: add data display functions
+//=====Data Display=====
+function rangerDisplayInit {
+    clearscreen.
 
+    print "=====RANGER GUIDANCE=====" at(0,0).
+    print "ERR:" at(0,1).
+    print "DRE:" at(0,2).
+    print "XRE:" at(0,3).
+    print "ROL:" at(0,4).
+    print "DIR:" at(0,5).
+    print "TTR:" at(0,6).
+    print "XTR:" at(0,7).
+    print "=========================" at(0,8).
+
+    print "KM"   at(12,1).
+    print "KM"   at(12,2).
+    print "KM"   at(12,3).
+    print "DEG"  at(12,4).
+    print "SEC"  at(12,6).
+    print "KM"   at(12,7).
+}.
+
+function rangerDisplayUpdate {
+    print round(rangerLex:totalError,1)       + "  " at(5,1).
+    print round(rangerLex:downrangeError,1)   + "  " at(5,2).
+    print round(rangerLex:crossrangeError,1)  + "  " at(5,3).
+    print round(rangerLex:targetRoll,1)       + "  " at(5,4).
+    print choose "left"
+        if rangerLex:rollDirection = 1
+        else "right"                          + "  " at (5,5).
+    print round(
+        time:seconds -
+        (rangerLex:lastRollReversalTime +
+        rangerInit:timeBetweenReversals),
+        1)                                    + "  " at(5,6).
+    print round(
+        rangerInit:crossrangeTolerance -
+        abs(rangerLex:crossrangeError),
+        1)                                    + "  " at(5,7).
+}.
 
 //=====Create Vecdraws=====
 local steerVecDraw to vecDraw(
@@ -194,6 +236,8 @@ local steerTopVecDraw to vecDraw(
 
 function clamp { parameter minval, val, maxval. return max(minval, min(maxval, val)). }.
 
+if rangerInit:displayData { rangerDisplayInit(). }.
+
 //=====MAIN FUNCTION=====
 function getRangerGuidance {
     
@@ -201,9 +245,11 @@ function getRangerGuidance {
 
         updateRangerLex().
 
+        if rangerInit:displayData { rangerDisplayUpdate(). }.
+
         local shipProgradeVec to ship:velocity:surface.
 
-        local targetRoll to getDownrangeError() * rangerInit:bankGain.
+        local targetRoll to rangerLex:downrangeError * rangerInit:bankGain.
 
         set rangerLex:targetRoll to clamp(
             rangerInit:minimumBank,
@@ -236,6 +282,20 @@ function getRangerGuidance {
         }.
 
 
-    } else { unlock steering. }.
+    } else {
+
+        unlock steering.
+
+        if rangerInit:displayVecDraws {
+            clearvecdraws().
+        }.
+
+        if rangerInit:displayData {
+            clearscreen.
+        }.
+
+        print "RANGER GUIDANCE COMPLETE".
+        print "MANUAL CONTROL REESTABLISHED".
+    }.
 
 }
