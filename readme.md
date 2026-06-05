@@ -18,7 +18,7 @@ RANGER provides entry guidance for spaceplanes via constant AoA and dynamic bank
 copypath("0:/ranger.ks", "1:/").
 ```
 
-2. Create the rangerInit lexicon that defines the necessary parameters for the RANGER script:
+2. Create the rangerInit lexicon that defines the necessary parameters for the RANGER script. The only parameter that's actually required is the Angle Of Attack parameter; RANGER will assume safe defaults for everything else:
 
 |Parameter|Description|Unit|Required|Default Value|
 |---|---|---|---|---|
@@ -31,7 +31,7 @@ copypath("0:/ranger.ks", "1:/").
 |minimumBank|The minimum bank angle to use. Recommended to keep this at least 10 degrees; if set to 0, the script may not be able to correct for crossrange errors if the downrange error is negative|degrees|no|10|
 |maximumBank|The maximum bank angle to use. Recommended to keep this at least 60 degrees; if set too low, the script may not be able to correct for large downrange errors if the downrange error is positive|degrees|no|90|
 |bankGain|The proportional gain for calculating the bank angle based on the downrange error. Higher values will result in more aggressive bank angle adjustments, while lower values will result in smoother but slower corrections. Adjust this value based on the performance of your spaceplane and the desired responsiveness|degrees per meter|no|0.004|
-|displayData *not yet implemented* |Whether to display real-time guidance data on the terminal while RANGER is active. Set to false to use your own custom data display|boolean|no|true|
+|displayData|Whether to display real-time guidance data on the terminal while RANGER is active. Set to false to use your own custom data display|boolean|no|true|
 |displayVecDraws|Whether to display vecdraws that show where the script is directing the spaceplane to point|boolean|no|false|
 
 ```
