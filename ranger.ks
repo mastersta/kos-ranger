@@ -194,28 +194,28 @@ function rangerDisplayInit {
 }.
 
 function rangerDisplayUpdate {
-    print round(rangerLex:totalError,1)       + "  " at(5,1).
-    print round(rangerLex:downrangeError,1)   + "  " at(5,2).
-    print round(rangerLex:crossrangeError,1)  + "  " at(5,3).
-    print round(rangerLex:targetRoll,1)       + "  " at(5,4).
-    print choose "left"
+    print round(rangerLex:totalError / 1000,1)       + "  " at(5,1).
+    print round(rangerLex:downrangeError / 1000,1)   + "  " at(5,2).
+    print round(rangerLex:crossrangeError / 1000,1)  + "  " at(5,3).
+    print round(rangerLex:targetRoll,1)              + "  " at(5,4).
+    print choose "L"
         if rangerLex:rollDirection = 1
-        else "right"                          + "  " at (5,5).
+        else "R"                                 + "  " at (5,5).
     print round(
         time:seconds -
         (rangerLex:lastRollReversalTime +
         rangerInit:timeBetweenReversals),
-        1)                                    + "  " at(5,6).
+        1)                                           + "  " at(5,6).
     print round(
-        rangerInit:crossrangeTolerance -
-        abs(rangerLex:crossrangeError),
-        1)                                    + "  " at(5,7).
+        (rangerInit:crossrangeTolerance -
+        abs(rangerLex:crossrangeError)) / 1000,
+        1)                                           + "  " at(5,7).
 }.
 
 //=====Create Vecdraws=====
 local steerVecDraw to vecDraw(
     v(0,0,0),
-    steeringDir:forevector,
+    ship:srfprograde:forevector,
     rgb(1,0,0),
     "SteeringVec",
     20.0,
@@ -225,7 +225,7 @@ local steerVecDraw to vecDraw(
 
 local steerTopVecDraw to vecDraw(
     v(0,0,0),
-    steeringDir:topvector,
+    ship:srfprograde:topvector,
     rgb(0,1,0),
     "",
     10.0,
@@ -245,7 +245,6 @@ function getRangerGuidance {
 
         updateRangerLex().
 
-        if rangerInit:displayData { rangerDisplayUpdate(). }.
 
         local shipProgradeVec to ship:velocity:surface.
 
@@ -257,6 +256,7 @@ function getRangerGuidance {
             rangerInit:maximumBank
         ) * rangerLex:rollDirection.
 
+        if rangerInit:displayData { rangerDisplayUpdate(). }.
 
         local rollDirection to angleaxis(rangerLex:targetRoll, shipProgradeVec) *
             lookdirup(shipProgradeVec, ship:up:forevector).
@@ -269,8 +269,8 @@ function getRangerGuidance {
             set steerTopVecDraw:vec to pitchDirection:topvector.
         }.
 
-        set steerVecDraw:visible to rangerLex:displayVecDraws.
-        set steerTopVecDraw:visible to rangerLex:displayVecDraws.
+        set steerVecDraw:show to rangerInit:displayVecDraws.
+        set steerTopVecDraw:show to rangerInit:displayVecDraws.
 
         //If in the atmosphere, use the calcuated roll vector
         if ship:altitude < ship:body:atm:height {
@@ -286,9 +286,6 @@ function getRangerGuidance {
 
         unlock steering.
 
-        if rangerInit:displayVecDraws {
-            clearvecdraws().
-        }.
 
         if rangerInit:displayData {
             clearscreen.
@@ -296,6 +293,7 @@ function getRangerGuidance {
 
         print "RANGER GUIDANCE COMPLETE".
         print "MANUAL CONTROL REESTABLISHED".
+        clearvecdraws().
     }.
 
 }

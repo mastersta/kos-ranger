@@ -18,7 +18,7 @@ RANGER provides entry guidance for spaceplanes via constant AoA and dynamic bank
 copypath("0:/ranger.ks", "1:/").
 ```
 
-2. Create the rangerInit lexicon that defines the necessary parameters for the RANGER script:
+2. Create the rangerInit lexicon that defines the necessary parameters for the RANGER script. The only parameter that's actually required is the Angle Of Attack parameter; RANGER will assume safe defaults for everything else:
 
 |Parameter|Description|Unit|Required|Default Value|
 |---|---|---|---|---|
