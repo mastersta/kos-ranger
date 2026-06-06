@@ -55,7 +55,7 @@ clearvecdraws().
 //=====DATA STORAGE=====
 global rangerLex to lexicon().
 set rangerLex:lastRollReversalTime to time:seconds.
-set rangerLex:rollDirection to 1.  //1 for left roll, -1 for right roll; initialized to left roll
+set rangerLex:rollDirection to 0.  //1 for left roll, -1 for right roll
 function updateRangerLex {
     set rangerLex:impactPos to addons:tr:impactpos.
     set rangerLex:impactLatRads to constant:degToRad * rangerLex:impactPos:lat.
@@ -132,6 +132,8 @@ function getCrossrangeError {
 }.
 
 
+local rollFirstCalc to true.
+
 //Returns the direction of roll correction; positive is left roll, negative is right roll
 function getRollDirection {
     local output to rangerLex:rollDirection.
@@ -149,6 +151,14 @@ function getRollDirection {
         }.
 
     } else if rangerInit:rollReversalMode = "both" {
+    
+        if time:seconds > (rangerLex:lastRollReversalTime + rangerInit:timeBetweenReversals) {
+            if getCrossrangeError() > 0 { set output to 1. }
+            else                        { set output to -1.}.
+
+            set rangerLex:lastRollReversalTime to time:seconds.
+        }.
+
         if getCrossrangeError() > (rangerLex:crossrangeTolerance) {
             set output to 1.
             set rangerLex:lastRollReversalTime to time:seconds.
@@ -158,14 +168,17 @@ function getRollDirection {
             set rangerLex:lastRollReversalTime to time:seconds.
         }.
 
-        if time:seconds > (rangerLex:lastRollReversalTime + rangerInit:timeBetweenReversals) {
-            if getCrossrangeError() > 0 { set output to 1. }
-            else                        { set output to -1.}.
-
-            set rangerLex:lastRollReversalTime to time:seconds.
-        }.
 
     }.
+
+    if rollFirstCalc = true {
+        set output to choose 
+            1
+            if getCrossrangeError() > 0
+            else -1.
+        set rollFirstCalc to false.
+    }.
+    
 
     //TODO: add in smooth roll reversal
     return output.
