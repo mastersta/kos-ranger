@@ -199,12 +199,12 @@ function rangerDisplayInit {
     print "XTR:" at(0,7).
     print "=========================" at(0,8).
 
-    print "KM"   at(12,1).
-    print "KM"   at(12,2).
-    print "KM"   at(12,3).
-    print "DEG"  at(12,4).
-    print "SEC"  at(12,6).
-    print "KM"   at(12,7).
+    print "KM"   at(15,1).
+    print "KM"   at(15,2).
+    print "KM"   at(15,3).
+    print "DEG"  at(15,4).
+    print "SEC"  at(15,6).
+    print "KM"   at(15,7).
 }.
 
 function rangerDisplayUpdate {
