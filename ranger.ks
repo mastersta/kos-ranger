@@ -47,6 +47,7 @@ set addons:tr:descentangles to list(
     0
 ).
 addons:tr:settarget(rangerInit:target).
+clearvecdraws().
 
 
 
@@ -218,7 +219,7 @@ local steerVecDraw to vecDraw(
     ship:srfprograde:forevector,
     rgb(1,0,0),
     "SteeringVec",
-    20.0,
+    50.0,
     false,
     0.01
 ).
@@ -228,7 +229,7 @@ local steerTopVecDraw to vecDraw(
     ship:srfprograde:topvector,
     rgb(0,1,0),
     "",
-    10.0,
+    50.0,
     false,
     0.01
 ).
