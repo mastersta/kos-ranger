@@ -107,18 +107,30 @@ function getRelativeBearingError {
 
     local thetaImpact to arctan2(y, x).
     
-    return thetaImpact - getThetaHeading().
+    local output to thetaImpact - getThetaHeading().
+
+
+
+    return output.
+
+
 }.
 
 //Returns the heading of the ship at the predicted impact point
-//NOTE: Only works if the ship is currently past halfway through it's orbit before impact
-//      This will probably be true - most deorbit burns don't go earlier than that
-//      TODO: Maybe find a way to fix that
 function getThetaHeading {
-    return choose  
-        arcsin(cos(ship:orbit:inclination) / cos(addons:tr:impactpos:lat))
-        if (ship:geoposition:lat > 0)
-        else (90 - arcsin(cos(ship:orbit:inclination) / cos(addons:tr:impactpos:lat))).
+    local output to arcsin(
+        clamp(
+            -1,
+            cos(ship:orbit:inclination) / cos(addons:tr:impactpos:lat),
+            1
+        )
+    ).
+
+    if ship:latitude < 0 { set output to 180 - output. }.
+
+    print "THI   " + round(output,3) + "  " at(0,21).
+
+    return output.
 }.
 
 //Returns downrange error in meters; positive is downrange, negative is uprange
