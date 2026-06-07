@@ -128,10 +128,7 @@ function getThetaHeading {
     ).
 
     if ship:latitude > 0 { set output to 180 - output. }.
-
     if ship:orbit:inclination > 90 { set output to mod(360 + output,360). }.
-
-    print "THI   " + round(output,3) + "  " at(0,21).
 
     return output.
 }.
