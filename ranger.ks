@@ -108,16 +108,32 @@ function getRelativeBearingError {
 
     local thetaImpact to arctan2(y, x).
     
-    return thetaImpact - getThetaHeading().
+    local output to thetaImpact - getThetaHeading().
+
+
+
+    return output.
+
+
 }.
 
 //Returns the heading of the ship at the predicted impact point
-//TODO: fix for non-equatorial targets
 function getThetaHeading {
-    return choose  
-        (90 + ship:obt:inclination)
-        if (ship:geoposition:lat < 90)
-        else (90 - ship:obt:inclination).
+    local output to arcsin(
+        clamp(
+            -1,
+            cos(ship:orbit:inclination) / cos(addons:tr:impactpos:lat),
+            1
+        )
+    ).
+
+    if ship:latitude > 0 { set output to 180 - output. }.
+
+    if ship:orbit:inclination > 90 { set output to mod(360 + output,360). }.
+
+    print "THI   " + round(output,3) + "  " at(0,21).
+
+    return output.
 }.
 
 //Returns downrange error in meters; positive is downrange, negative is uprange
