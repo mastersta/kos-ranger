@@ -121,15 +121,14 @@ function getThetaHeading {
     local output to arcsin(
         clamp(
             -1,
-            //cos(ship:orbit:inclination) / cos(addons:tr:impactpos:lat),
-            abs(addons:tr:imactpos:lat) / mod(ship:orbit:inclination,90),
+            cos(ship:orbit:inclination) / cos(addons:tr:impactpos:lat),
             1
         )
     ).
 
-    if ship:orbit:inclination > 90 { set output to 180 - output. }.
+    if ship:latitude > 0 { set output to 180 - output. }.
 
-    if ship:latitude < 0 { set output to 180 - output. }.
+    if ship:orbit:inclination > 90 { set output to mod(360 + output,360). }.
 
     print "THI   " + round(output,3) + "  " at(0,21).
 
